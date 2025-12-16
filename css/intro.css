@@ -1,0 +1,56 @@
+/* =====================================================
+   INTRO — tiempos apreciables (Preset A)
+   SOLO POST-LOOP (no afecta el loop)
+===================================================== */
+
+#loader-container svg.lift-logo,
+#loader-container svg.drop-logo,
+#loader-container svg.bounce-logo {
+  width: var(--gd-logo-width, 280px);
+  max-width: 90vw;
+  height: auto;
+  transform-origin: 50% 100%;
+  will-change: transform;
+}
+
+/* Estado base neutro */
+#loader-container svg {
+  transform: scale(1);
+}
+
+/* ---------------- LIFT (más perceptible) ---------------- */
+.lift-logo {
+  /* Escala +45% en 3s desde el punto base (solo escala, sin traslación) */
+  animation: lift 2s cubic-bezier(0.22, 0.6, 0.2, 1) forwards;
+}
+
+@keyframes lift {
+  /* Scale-only lift: crece desde el punto de origen sin desplazarse */
+  0%   { transform: scale(1); }
+ 100% { transform: scale(1.45); }
+}
+
+/* ---------------- DROP (0.55s) ---------------- */
+.drop-logo {
+  /* Caída rápida: 0.5s desde el pico (scale 1.45) hasta reposo */
+  animation: drop 0.55s cubic-bezier(0.0, 0.0, 0.2, 1) forwards;
+}
+
+@keyframes drop {
+  /* Drop from scaled state back to rest (no vertical offset expected) */
+  0%   { transform: scale(1.45); }
+  70%  { transform: scale(0.98); }
+ 100%  { transform: scale(1.00); }
+}
+
+/* ---------------- BOUNCE (0.40s) ---------------- */
+.bounce-logo {
+  animation: bounce 0.40s cubic-bezier(0.25, 0.5, 0.5, 1) forwards;
+}
+
+@keyframes bounce {
+  0%   { transform: scale(1.00); }
+ 35%   { transform: scale(1.03); }
+ 65%   { transform: scale(0.995); }
+ 100%  { transform: scale(1.00); }
+}

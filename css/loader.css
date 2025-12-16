@@ -1,0 +1,112 @@
+/* ============================================================
+   LOADER
+============================================================ */
+
+/* Movimiento horizontal izquierda → derecha */
+@keyframes revealX {
+    from { x: -210px; }
+    to   { x: 0; }
+}
+
+/* Movimiento vertical arriba → abajo */
+@keyframes revealY {
+    from { y: -170px; }
+    to   { y: 0; }
+}
+
+/* Movimiento horizontal izquierda → derecha (marco superior) */
+@keyframes revealLeftToRight {
+    from { x: -210px; }
+    to   { x: 0; }
+}
+
+/* Movimiento vertical arriba → abajo (marco derecho) */
+@keyframes revealTopToBottom {
+    from { y: -170px; }
+    to   { y: 0; }
+}
+
+/* Movimiento horizontal derecha → izquierda (marco inferior) */
+@keyframes revealRightToLeft {
+    from { x: 210px; }
+    to   { x: 0; }
+}
+
+/* Movimiento vertical abajo → arriba (marco izquierdo) */
+@keyframes revealBottomToTop {
+    from { y: 170px; }
+    to   { y: 0; }
+}
+
+#rectX      { animation: revealX           0.71s cubic-bezier(0.55,0.08,0.44,0.99) forwards; }
+#rectY      { animation: revealY           0.71s cubic-bezier(0.55,0.08,0.44,0.99) forwards; animation-delay: 0.64s; }
+
+#rectTop    { animation: revealLeftToRight 0.36s ease-in-out forwards; animation-delay: 1.38s; }
+#rectBottom { animation: revealLeftToRight 0.36s ease-in-out forwards; animation-delay: 1.68s; }
+#rectLeft   { animation: revealTopToBottom 0.36s ease-in-out forwards; animation-delay: 2.00s; }
+#rectRight  { animation: revealTopToBottom 0.36s ease-in-out forwards; animation-delay: 2.31s; }
+
+/* ANIMACIÓN DE TRAZOS */
+@keyframes drawLine {
+    to { stroke-dashoffset: 0; }
+}
+
+#loader-container .str0,
+#loader-container .str1,
+#loader-container .str2,
+#loader-container .str3,
+#loader-container .str4,
+#loader-container .str5 {
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+#loader-container .str0 {
+    stroke: #C4C3C4;
+    stroke-dasharray: 5 3 1 3;
+}
+
+#loader-container .str1 {
+    stroke: #C4C3C4;
+}
+
+#loader-container .str2 {
+    stroke: #C4C3C4;
+    stroke-width: 0.75;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    animation: drawLine 20s ease-out forwards;
+    animation-delay: 2.62s;
+}
+
+#loader-container .str3 {
+    stroke: #FF0009;
+    stroke-width: 0.75;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: -2000;
+    animation: drawLine 1.5s ease-in-out forwards;
+    animation-delay: 2.62s;
+}
+
+#loader-container .str4 {
+    stroke: #FF0009;
+    stroke-width: 1;
+    stroke-dasharray: 2000;
+    stroke-dashoffset: -2000;
+    animation: drawLine 1.5s ease-in-out forwards;
+    animation-delay: 2.86s;
+}
+
+/* TRAZO FINAL — loader.js espera ESTE animationend */
+#loader-container .str5 {
+    stroke: #2A41C8;
+    stroke-width: 1;
+    stroke-dasharray: 3000;
+    stroke-dashoffset: 3000;
+    animation: drawLine 1.3s ease-in-out forwards;
+    animation-delay: 3.3s;
+}
+
+/* Punto fijo eliminado */
+#loader-stage { position: relative; }
