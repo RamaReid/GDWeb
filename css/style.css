@@ -52,8 +52,6 @@ body {
   -webkit-backdrop-filter: blur(0.5px);
 }
 
-
-
 /* INTRO LAYER */
 #intro-layer {
   position: fixed;
@@ -105,6 +103,3 @@ body {
   height: auto;
   display: block;
 }
-
-
-
