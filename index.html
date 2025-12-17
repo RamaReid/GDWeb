@@ -129,11 +129,37 @@
             </div>
         </div>
     </div>
+
+    <!-- RADIAL MASK SVG (DEBUG) -->
+  
+
+    <svg id="radialMaskSVG"
+         width="100%"
+         height="100%"
+         preserveAspectRatio="none"
+         style="position:fixed; inset:0; pointer-events:none; z-index:20;">
+        <defs>
+            <mask id="radialHoleMask"
+                  maskUnits="userSpaceOnUse"
+                  maskContentUnits="userSpaceOnUse">
+                <rect id="maskRect"
+                      x="0" y="0"
+                      width="100%" height="100%"
+                      fill="white"/>
+                <circle id="maskHole"
+                        cx="0"
+                        cy="0"
+                        r="0"
+                        fill="black"/>
+            </mask>
+        </defs>
+    </svg>
     <!-- ======================================================
          JS — NÚCLEO (ORDEN IMPORTANTE)
     ======================================================= -->
     <script src="js/loader.js"></script>
     <script src="js/boot.js"></script>
     <script src="js/intro.js"></script>
+    <script src="js/radialReveal.js"></script>
 </body>
 </html>

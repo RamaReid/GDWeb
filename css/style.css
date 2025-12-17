@@ -21,27 +21,55 @@ body {
   background: var(--gd-background);
 }
 
-/* PLANO BASE */
+/* ===============================
+   PLANO BASE (FONDO REAL)
+   SIEMPRE VISIBLE, NO INTERACTIVO
+/* ======================================================
+   PLANO BASE — ATENUADO PERMANENTE
+   Rol: contexto visual, no protagonista
+====================================================== */
+
+/* ======================================================
+   PLANO BASE — APAGADO POR DEFECTO
+====================================================== */
+
 #plano-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: url("/assets/img/FondoCasaM.png") center / cover no-repeat;
+
+  background-image: url("/img/FondoCasaM.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
+
 
 /* INTRO LAYER */
 #intro-layer {
   position: fixed;
   inset: 0;
-  background: var(--gd-cover);
+
   z-index: 10;
 
   display: flex;
   justify-content: center;
   align-items: center;
+}
 
-  pointer-events: all;
+/* COVER REAL DE LA INTRO */
+#background-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--gd-cover);
+  z-index: 1;
+
+  /* RADIAL MASK */
+  -webkit-mask: url(#radialHoleMask);
+  mask: url(#radialHoleMask);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
 
 /* LOADER LAYOUT */
@@ -69,3 +97,6 @@ body {
   height: auto;
   display: block;
 }
+
+
+
