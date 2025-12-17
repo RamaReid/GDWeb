@@ -1,0 +1,255 @@
+/* ======================================================
+   HOME — GD Arquitectura
+   Header (cápsula) + Hero (revista full-viewport)
+   Nota: este archivo NO toca la intro/loader.
+====================================================== */
+
+/* ======================================================
+   SIN SCROLL EN ETAPA HOME (solo cuando body tiene .home)
+====================================================== */
+html, body.home {
+  height: 100%;
+}
+
+body.home {
+  overflow: hidden;
+}
+
+/* ======================================================
+   APP LAYER
+====================================================== */
+#app-layer {
+  position: relative;
+  z-index: 2;
+}
+
+/* ======================================================
+   HEADER — CONTENEDOR (SIN FONDO)
+====================================================== */
+.gd-header {
+  position: fixed;
+  top: 5px;
+  left: 20px;
+  right: 20px;
+
+  z-index: 40;
+
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    transform 0.9s cubic-bezier(0.22, 0.6, 0.2, 1),
+    opacity 0.6s ease;
+}
+
+body.header-visible .gd-header {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ======================================================
+   HEADER — CÁPSULA REAL (acá vive el vidrio + borde)
+====================================================== */
+.navbar {
+  max-width: 1375px;
+  margin: 40px auto 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0px 35px 0px 12.5px;
+
+  /* vidrio real (transparente, no barra sólida) */
+  background: rgba(15, 19, 32, 0.75);
+  backdrop-filter: blur(5);
+  -webkit-backdrop-filter: blur(5);
+
+  /* borde editorial */
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 9999px;
+}
+
+/* ======================================================
+   BRAND
+====================================================== */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand-logo {
+  width: 100px;
+  height: auto;
+  display: block;
+}
+
+/* ======================================================
+   LOGO SVG DEL HEADER (NO OMITIR ELEMENTOS)
+   Tu SVG usa: logoL0, logoL1, logoL2, logoL3, logoL4, logoL5
+====================================================== */
+.gd-header .brand-logo * {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  /* por si algún CSS previo dejó dashoffset para animaciones */
+  animation: none !important;
+  stroke-dashoffset: 0 !important;
+}
+
+/* punteadas */
+.gd-header .brand-logo .logoL0 {
+  stroke: var(--gd-grey);
+  stroke-width: 1;
+  stroke-dasharray: 5 3 1 3;
+}
+
+/* marco */
+.gd-header .brand-logo .logoL1 {
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 1.2;
+}
+
+/* trazo “técnico” (gris) */
+.gd-header .brand-logo .logoL2 {
+  stroke: var(--gd-grey);
+  stroke-width: 1;
+}
+
+/* G (interior) */
+.gd-header .brand-logo .logoL3 {
+  stroke: var(--gd-red);
+  stroke-width: 1;
+}
+
+/* G (exterior) */
+.gd-header .brand-logo .logoL4 {
+  stroke: var(--gd-red);
+  stroke-width: 1.2;
+}
+
+/* D */
+.gd-header .brand-logo .logoL5 {
+  stroke: var(--gd-blue);
+  stroke-width: 1.25;
+}
+
+.brand-tagline {
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gd-grey);
+  white-space: nowrap;
+}
+
+/* ======================================================
+   NAV (3 vínculos)
+====================================================== */
+.nav-area {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-list a {
+  font-size: 1rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gd-grey);
+  text-decoration: none;
+  transition: color 0.25s ease;
+}
+
+.nav-list a:hover {
+  color: #ffffff;
+}
+
+/* ======================================================
+   HERO — REVISTA (FULL VIEWPORT SIN SCROLL)
+====================================================== */
+.hero-revista-section {
+  position: fixed;
+  inset: 0;
+
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  /* espacio real para el header-cápsula */
+  padding: 25px 25px 25px;
+  box-sizing: border-box;
+
+  z-index: 30;
+}
+
+body.hero-visible .hero-revista-section {
+  display: flex;
+}
+
+/* cápsula revista */
+.hero-revista-shell {
+  width: 100%;
+  height: 100%;
+
+  background: transparent;
+  border: 3px solid rgba(255, 255, 255, 0.18);
+  border-radius: 60px;
+  overflow: hidden;
+}
+
+/* iframe si/ cuando se inyecte */
+#hero-iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+  background: transparent;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+@media (max-width: 768px) {
+  .navbar {
+    margin: 12px 12px 0;
+    padding: 12px 16px;
+    border-radius: 16px;
+  }
+
+  .brand-tagline {
+    display: none;
+  }
+
+  .nav-list {
+    gap: 18px;
+  }
+
+  .brand-logo {
+    width: 42px;
+  }
+
+  .hero-revista-section {
+    padding: 88px 16px 16px;
+  }
+
+  .hero-revista-shell {
+    border-radius: 18px;
+  }
+}
