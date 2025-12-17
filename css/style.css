@@ -21,17 +21,6 @@ body {
   background: var(--gd-background);
 }
 
-/* ===============================
-   PLANO BASE (FONDO REAL)
-   SIEMPRE VISIBLE, NO INTERACTIVO
-/* ======================================================
-   PLANO BASE — ATENUADO PERMANENTE
-   Rol: contexto visual, no protagonista
-====================================================== */
-
-/* ======================================================
-   PLANO BASE — APAGADO POR DEFECTO
-====================================================== */
 
 #plano-bg {
   position: fixed;
@@ -44,6 +33,25 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+/* ===============================
+   PLANO — ATENUACIÓN PERMANENTE
+   (no interfiere con el reveal)
+================================ */
+
+#plano-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  /* Veladura sutil para bajar contraste */
+  background: rgba(15, 19, 32, 0.35
+  ); /* ajustable */
+  backdrop-filter: blur(0.5px);
+  -webkit-backdrop-filter: blur(0.5px);
+}
+
 
 
 /* INTRO LAYER */

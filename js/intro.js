@@ -1,7 +1,7 @@
 // intro.js
 // Lift → Drop → Bounce
-// El radial reveal comienza AL INICIAR el bounce
-// El logo desaparece AL FINALIZAR el bounce
+// El radial reveal comienza cuando TERMINA el bounce
+// y COINCIDE con el inicio del fade del logo
 
 let introExecuted = false;
 
@@ -40,29 +40,30 @@ window.addEventListener("appReady", () => {
       // -------- BOUNCE --------
       svg.classList.add("bounce-logo");
 
-      // 🔑 EL REVEAL EMPIEZA ACÁ (inicio del rebote)
-      if (typeof window.startRadialReveal === "function") {
-        window.startRadialReveal({
-          duration: 13500
-        });
-      }
-
       svg.addEventListener("animationend", function onBounce(e) {
         if (e.target !== svg || e.animationName !== "bounce") return;
 
         svg.removeEventListener("animationend", onBounce);
         svg.classList.remove("bounce-logo");
 
-        // El logo desaparece al finalizar el rebote
+        // 🔑 A PARTIR DE ACÁ: fin del gesto físico del logo
+
+        // Inicia fade del logo
         svg.style.transition = "opacity 0.6s ease";
         svg.style.opacity = "0";
 
-        // Evento de cierre de intro (opcional, pero limpio)
+        // 🔑 EL REVEAL EMPIEZA ACÁ (inicio del fade)
+        if (typeof window.startRadialReveal === "function") {
+          window.startRadialReveal({
+            duration: 13500
+          });
+        }
+
+        // Evento de cierre de intro
         window.dispatchEvent(new Event("introComplete"));
 
-        // Mostrar el plano cuando el logo ya salió
-        document.body.classList.add("plano-visible");
-
+        // (si luego decidís volver a usar plano-visible, quedaría acá)
+        // document.body.classList.add("plano-visible");
       });
     });
   });
