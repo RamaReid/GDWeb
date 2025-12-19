@@ -54,3 +54,9 @@
  65%   { transform: scale(0.995); }
  100%  { transform: scale(1.00); }
 }
+
+#intro-layer,
+.intro-layer,
+.intro-overlay {
+  pointer-events: none;
+}
