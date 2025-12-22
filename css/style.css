@@ -103,3 +103,17 @@ body {
   height: auto;
   display: block;
 }
+
+/* ======================================================
+   SCROLLBAR — OCULTA (SCROLL SIGUE FUNCIONANDO)
+====================================================== */
+html, body {
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* Edge viejo */
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}

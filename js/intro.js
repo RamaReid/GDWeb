@@ -62,6 +62,9 @@ window.addEventListener("appReady", () => {
         // Evento de cierre de intro
         window.dispatchEvent(new Event("introComplete"));
 
+        document.body.classList.remove("sequence-only");
+
+
         // (si luego decidís volver a usar plano-visible, quedaría acá)
         // document.body.classList.add("plano-visible");
       });

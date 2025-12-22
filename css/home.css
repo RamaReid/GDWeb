@@ -4,14 +4,20 @@
 ====================================================== */
 
 /* ======================================================
-   SIN SCROLL EN HOME
+   SCROLL — BLOQUEO SOLO DURANTE INTRO (sequence-only)
 ====================================================== */
-html,
-body.home {
-  height: 100%;
+html, body {
+  height: auto;
 }
 
-body.home {
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Durante intro/loader: NO SCROLL, sin barra */
+body.sequence-only {
+  height: 100%;
   overflow: hidden;
 }
 
@@ -218,8 +224,10 @@ body.hero-interacting .gd-header {
    HERO — CONTENEDOR
 ====================================================== */
 .hero-revista-section {
-  position: fixed;
-  inset: 0;
+  position: relative;
+  width: 100%;
+  height: 100vh;/* ← vuelve al alto exacto de “pantalla completa” */
+  min-height: 100vh; /* ← opcional, pero lo podés dejar */
 
   display: flex;
   align-items: center;
@@ -368,3 +376,55 @@ body.nav-open .nav-toggle span:nth-child(3) {
     font-size: 0.8rem; /* −20% */
   }
 }
+
+/* ======================================================
+   HOME — TABLERO NARRATIVO
+====================================================== */
+
+#home-board {
+  width: 100%;
+  position: relative;
+}
+
+/* Escenas */
+.scene {
+  max-width: var(--gd-max-width); /* mismo ancho que hero */
+  margin: 0 auto;
+  padding: clamp(80px, 12vh, 140px) 0;
+  position: relative;
+}
+
+/* Texto central */
+.scene-text {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Grillas */
+.scene-moments,
+.scene-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(24px, 4vw, 48px);
+}
+
+/* Cards */
+.scene-card {
+  display: block;
+  overflow: hidden;
+}
+
+.scene-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Hero horizontal */
+.scene-space .scene-card.wide {
+  display: block;
+}
+
