@@ -14,12 +14,10 @@
        Delay editorial:
        dejamos que el reveal sea protagonista
     ============================================ */
-    const HOME_DELAY = 1500; // ms (ajustable, no rompe nada)
+
+    const HOME_DELAY = 1500;
 
     setTimeout(() => {
-      // 1. Mostrar header (ya tiene animación por CSS)
-      document.body.classList.add("header-visible");
-
       const logo = document.querySelector(".brand-logo");
       const tagline = document.querySelector(".brand-tagline");
       const navItems = document.querySelectorAll(".nav-list li");
@@ -34,14 +32,10 @@
         tagline.style.opacity = "0";
         tagline.style.transform = "translateY(6px)";
       }
-      navItems.forEach(li => {
+      navItems.forEach((li) => {
         li.style.opacity = "0";
         li.style.transform = "translateY(6px)";
       });
-      if (hero) {
-        hero.style.opacity = "0";
-        hero.style.transform = "scale(0.98)";
-      }
 
       /* Logo */
       setTimeout(() => {
@@ -73,50 +67,60 @@
       setTimeout(() => {
         console.log("HERO setTimeout ejecutado");
         const heroSection = document.querySelector(".hero-revista-section");
-        const heroShell   = document.getElementById("hero-revista-shell");
+        const heroShell = document.getElementById("hero-revista-shell");
 
         document.body.classList.add("hero-visible");
 
         if (heroSection) {
-            heroSection.style.transition = "opacity 0.5s ease";
-            heroSection.style.opacity = "1";
-            heroSection.style.visibility = "visible";
-            heroSection.style.pointerEvents = "auto";
+          heroSection.style.transition = "opacity 0.5s ease";
+          heroSection.style.opacity = "1";
+          heroSection.style.visibility = "visible";
+          heroSection.style.pointerEvents = "auto";
         }
 
         if (heroShell && !heroShell.querySelector("iframe")) {
-            const src = heroShell.getAttribute("data-hero-src");
+          const src = heroShell.getAttribute("data-hero-src");
 
-            if (src) {
-                const iframe = document.createElement("iframe");
-                iframe.src = src;
-                iframe.setAttribute("aria-label", "Revista GD");
-                iframe.style.width = "100%";
-                iframe.style.height = "100%";
-                iframe.style.border = "0";
-                iframe.style.display = "block";
+          if (src) {
+            const iframe = document.createElement("iframe");
+            iframe.src = src;
+            iframe.setAttribute("aria-label", "Revista GD");
+            iframe.style.width = "100%";
+            iframe.style.height = "100%";
+            iframe.style.border = "0";
+            iframe.style.display = "block";
 
-                heroShell.appendChild(iframe);
-            } else {
-                console.warn(
-                "Hero revista: falta data-hero-src en #hero-revista-shell"
-                );
-            }
+            // Identificador útil (y compatibilidad si algún CSS/JS lo usa)
+            iframe.id = "hero-iframe";
+
+            // Fallback: si el contenido del iframe no emite postMessage,
+            // igual ocultamos el header al primer click/tap en el iframe.
+            const hideHeaderFromIframe = () => {
+              document.body.classList.add("hero-interacting");
+              document.body.classList.remove("header-visible");
+            };
+
+            iframe.addEventListener("pointerdown", hideHeaderFromIframe, { passive: true });
+            iframe.addEventListener("mousedown", hideHeaderFromIframe, { passive: true });
+            iframe.addEventListener("touchstart", hideHeaderFromIframe, { passive: true });
+
+            heroShell.appendChild(iframe);
+          } else {
+            console.warn(
+              "Hero revista: falta data-hero-src en #hero-revista-shell"
+            );
+          }
         }
 
         if (hero) {
-            hero.style.transition =
-                "opacity 0.5s ease, transform 0.8s cubic-bezier(0.22,0.6,0.2,1)";
-            hero.style.opacity = "1";
-            hero.style.transform = "scale(1)";
+          hero.style.transition =
+            "opacity 0.5s ease, transform 0.8s cubic-bezier(0.22,0.6,0.2,1)";
+          hero.style.opacity = "1";
+          hero.style.transform = "scale(1)";
         }
-
-    }, 1200);
-
-
+      }, 1200);
     }, HOME_DELAY);
   });
-
 })();
 
 // NAV MOBILE TOGGLE
@@ -133,7 +137,6 @@ if (navToggle) {
 ====================================================== */
 
 (function () {
-
   let heroActivated = false;
 
   const restoreHeader = () => {
@@ -147,10 +150,10 @@ if (navToggle) {
 
   // Mensajes desde el iframe
   window.addEventListener("message", (event) => {
-
     if (!event.data || !event.data.type) return;
 
-    if (event.data.type === "HERO_INTERACTION") {
+    // Soporta ambos nombres de evento (según versión del hero)
+    if (event.data.type === "HERO_INTERACTION" || event.data.type === "HERO_USER_INTERACT") {
       if (heroActivated) return;
 
       heroActivated = true;
@@ -158,7 +161,8 @@ if (navToggle) {
       document.body.classList.remove("header-visible");
     }
 
-    if (event.data.type === "HERO_SCROLL_INTENT") {
+    // Soporta variantes (por si el hero manda otro alias)
+    if (event.data.type === "HERO_SCROLL_INTENT" || event.data.type === "HERO_SCROLL") {
       restoreHeader();
     }
   });
@@ -166,5 +170,4 @@ if (navToggle) {
   // Fallback: wheel fuera del iframe (por si ocurre)
   window.addEventListener("wheel", restoreHeader, { passive: true });
   window.addEventListener("touchmove", restoreHeader, { passive: true });
-
 })();
