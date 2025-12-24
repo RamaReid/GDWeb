@@ -96,10 +96,9 @@
               // smoothScroll injection disabled temporarily (was causing scroll/layout issue)
 
             // Fallback: si el contenido del iframe no emite postMessage,
-            // igual ocultamos el header al primer click/tap en el iframe.
+            // avisamos al padre que hubo interacción en el hero.
             const hideHeaderFromIframe = () => {
-              document.body.classList.add("hero-interacting");
-              document.body.classList.remove("header-visible");
+              try { window.dispatchEvent(new Event('HERO_INTERACTION_FALLBACK')); } catch (e) { }
             };
 
             iframe.addEventListener("pointerdown", hideHeaderFromIframe, { passive: true });
@@ -140,20 +139,17 @@ if (navToggle) {
 ====================================================== */
 
 (function () {
-  let heroActivated = false;
+  // Simplified: header appearance/disappearance removed — keep hero → unlock behavior only
 
   // Unlock scroll once (called from hero interaction or header interaction)
-  function unlockScrollOnce(showHeader = false) {
+  function unlockScrollOnce() {
     if (window.__gd_scroll_unlocked) return;
     window.__gd_scroll_unlocked = true;
 
     // Remove the intro-only lock so page can scroll
-    document.body.classList.remove('sequence-only');
+    try { document.body.classList.remove('sequence-only'); } catch (e) {}
 
-    // optionally ensure header is visible after unlock
-    if (showHeader) {
-      document.body.classList.add('header-visible');
-    }
+    // smoothScroll removed: no-op
 
     // clear any inline height styles that might prevent scroll
     try {
@@ -164,55 +160,32 @@ if (navToggle) {
     }
   }
 
-  // Allow header interactions to also unlock the scroll
+  // Allow header interactions to also unlock the scroll (no header toggles)
   const headerEl = document.querySelector('.gd-header');
   if (headerEl) {
-    headerEl.addEventListener('pointerdown', function () { unlockScrollOnce(true); }, { passive: true });
+    headerEl.addEventListener('pointerdown', function () { unlockScrollOnce(); }, { passive: true });
   }
 
-  const restoreHeader = () => {
-    if (!heroActivated) return;
-
-    heroActivated = false;
-
-    document.body.classList.remove("hero-interacting");
-    document.body.classList.add("header-visible");
-  };
-
-  // If smoothScroll intercepts wheel/touch, it emits custom events we should
-  // listen to so the header/hero state updates as if a native wheel happened.
-  window.addEventListener('smoothscroll-wheel', function () {
-    restoreHeader();
-  }, { passive: true });
-  window.addEventListener('smoothscroll-touch', function () {
-    restoreHeader();
-  }, { passive: true });
-
-  // Mensajes desde el iframe
+  // Mensajes desde el iframe: on interaction, unlock scroll and sync scroller
   window.addEventListener("message", (event) => {
     if (!event.data || !event.data.type) return;
 
-    // Soporta ambos nombres de evento (según versión del hero)
     if (event.data.type === "HERO_INTERACTION" || event.data.type === "HERO_USER_INTERACT") {
-      // interaction with hero: unlock scroll but keep header hidden (hero-interacting)
-      unlockScrollOnce(false);
-
-      if (heroActivated) return;
-
-      heroActivated = true;
-      document.body.classList.add("hero-interacting");
-      document.body.classList.remove("header-visible");
+      try { unlockScrollOnce(); } catch (e) {}
+      // smoothScroll removed: no-op
     }
 
-    // Soporta variantes (por si el hero manda otro alias)
     if (event.data.type === "HERO_SCROLL_INTENT" || event.data.type === "HERO_SCROLL") {
-      // intent to scroll: unlock and show header
-      unlockScrollOnce(true);
-      restoreHeader();
+      try { unlockScrollOnce(); } catch (e) {}
+      // smoothScroll removed: no-op
     }
   });
 
-  // Fallback: wheel fuera del iframe (por si ocurre)
-  window.addEventListener("wheel", restoreHeader, { passive: true });
-  window.addEventListener("touchmove", restoreHeader, { passive: true });
+  // Fallback event from in-page hero click (when iframe doesn't postMessage)
+  window.addEventListener('HERO_INTERACTION_FALLBACK', function () {
+    try { unlockScrollOnce(); } catch (e) {}
+    // smoothScroll removed: no-op
+  }, { passive: true });
+
+  // No header show/hide logic present
 })();

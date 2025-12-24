@@ -3,15 +3,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // =======================================
-    // AVISAR AL HOME: PRIMERA INTERACCIÓN
+    // AVISAR AL HOME: INTERACCIONES DEL HERO
+    // Enviar mensaje al padre en cada pointerdown dentro del hero
+    // para que el header pueda ocultarse cada vez que el usuario
+    // interactúe con la revista.
     // =======================================
-    let firstInteractionSent = false;
-
     document.addEventListener("pointerdown", () => {
-        if (firstInteractionSent) return;
-
-        firstInteractionSent = true;
-
         window.parent.postMessage(
             { type: "HERO_INTERACTION" },
             "*"
