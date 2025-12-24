@@ -72,7 +72,7 @@
         document.body.classList.add("hero-visible");
 
         if (heroSection) {
-          heroSection.style.transition = "opacity 0.5s ease";
+          heroSection.style.transition = "opacity 1.5s ease";
           heroSection.style.opacity = "1";
           heroSection.style.visibility = "visible";
           heroSection.style.pointerEvents = "auto";
@@ -114,7 +114,7 @@
 
         if (hero) {
           hero.style.transition =
-            "opacity 0.5s ease, transform 0.8s cubic-bezier(0.22,0.6,0.2,1)";
+            "opacity 1.5s ease, transform 2.5s cubic-bezier(0.22,0.6,0.2,1)";
           hero.style.opacity = "1";
           hero.style.transform = "scale(1)";
         }
@@ -139,6 +139,34 @@ if (navToggle) {
 (function () {
   let heroActivated = false;
 
+  // Unlock scroll once (called from hero interaction or header interaction)
+  function unlockScrollOnce(showHeader = false) {
+    if (window.__gd_scroll_unlocked) return;
+    window.__gd_scroll_unlocked = true;
+
+    // Remove the intro-only lock so page can scroll
+    document.body.classList.remove('sequence-only');
+
+    // optionally ensure header is visible after unlock
+    if (showHeader) {
+      document.body.classList.add('header-visible');
+    }
+
+    // clear any inline height styles that might prevent scroll
+    try {
+      document.documentElement.style.height = '';
+      document.body.style.height = '';
+    } catch (e) {
+      // noop
+    }
+  }
+
+  // Allow header interactions to also unlock the scroll
+  const headerEl = document.querySelector('.gd-header');
+  if (headerEl) {
+    headerEl.addEventListener('pointerdown', function () { unlockScrollOnce(true); }, { passive: true });
+  }
+
   const restoreHeader = () => {
     if (!heroActivated) return;
 
@@ -154,6 +182,9 @@ if (navToggle) {
 
     // Soporta ambos nombres de evento (según versión del hero)
     if (event.data.type === "HERO_INTERACTION" || event.data.type === "HERO_USER_INTERACT") {
+      // interaction with hero: unlock scroll but keep header hidden (hero-interacting)
+      unlockScrollOnce(false);
+
       if (heroActivated) return;
 
       heroActivated = true;
@@ -163,6 +194,8 @@ if (navToggle) {
 
     // Soporta variantes (por si el hero manda otro alias)
     if (event.data.type === "HERO_SCROLL_INTENT" || event.data.type === "HERO_SCROLL") {
+      // intent to scroll: unlock and show header
+      unlockScrollOnce(true);
       restoreHeader();
     }
   });

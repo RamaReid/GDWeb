@@ -6,13 +6,10 @@
 /* ======================================================
    SCROLL — BLOQUEO SOLO DURANTE INTRO (sequence-only)
 ====================================================== */
-html, body {
-  height: auto;
-}
-
 body {
   overflow-x: hidden;
   overflow-y: auto;
+  color: var(--gd-grey);
 }
 
 /* Durante intro/loader: NO SCROLL, sin barra */
