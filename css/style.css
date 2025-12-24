@@ -42,8 +42,8 @@ body {
 
 /* Activar blur del plano cuando el hero entra en escena */
 body.hero-visible #plano-bg {
-  filter: blur(2px);
-  -webkit-filter: blur(2px);
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
   transform: scale(1.03);
   transition: filter 3s ease, transform 3s ease;
   will-change: filter, transform;
