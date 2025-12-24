@@ -17,17 +17,17 @@
   let target = current;
   let velocity = 0;
 
-  // tuning
-  const ease = 0.08; // lerp factor (smaller = slower)
-  const speed = 1; // multiplier for wheel delta
-  const maxDelta = 2000; // clamp very large deltas
+  // tuning (adjusted for a gentler feel)
+  const ease = 0.04; // lerp factor (smaller = slower/smoother)
+  const speed = 0.6; // multiplier for wheel delta (lower = gentler)
+  const maxDelta = 1200; // clamp very large deltas
 
   function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
   function rafLoop() {
     running = true;
     current += (target - current) * ease;
-    // if very close, snap and stop
-    if (Math.abs(target - current) < 0.5) {
+    // if very close, snap and stop (smaller threshold for smoother feel)
+    if (Math.abs(target - current) < 0.3) {
       window.scrollTo(0, Math.round(target));
       running = false;
       return;
@@ -52,6 +52,9 @@
     // Some environments require passive:false to preventDefault
     e.preventDefault();
 
+    // notify other code that user attempted to wheel (so page can react)
+    try { window.dispatchEvent(new CustomEvent('smoothscroll-wheel', { detail: { delta: e.deltaY } })); } catch (err) {}
+
     const delta = clamp(e.deltaY * speed, -maxDelta, maxDelta);
     target = clamp((target || window.scrollY) + delta, 0, document.documentElement.scrollHeight - window.innerHeight);
 
@@ -70,6 +73,7 @@
     const delta = touchStartY - y;
     touchStartY = y;
     e.preventDefault();
+    try { window.dispatchEvent(new CustomEvent('smoothscroll-touch', { detail: { delta } })); } catch (err) {}
     target = clamp((target || window.scrollY) + delta * speed, 0, document.documentElement.scrollHeight - window.innerHeight);
     if (!running) requestAnimationFrame(rafLoop);
   }

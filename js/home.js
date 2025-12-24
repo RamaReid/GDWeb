@@ -179,6 +179,15 @@ if (navToggle) {
     document.body.classList.add("header-visible");
   };
 
+  // If smoothScroll intercepts wheel/touch, it emits custom events we should
+  // listen to so the header/hero state updates as if a native wheel happened.
+  window.addEventListener('smoothscroll-wheel', function () {
+    restoreHeader();
+  }, { passive: true });
+  window.addEventListener('smoothscroll-touch', function () {
+    restoreHeader();
+  }, { passive: true });
+
   // Mensajes desde el iframe
   window.addEventListener("message", (event) => {
     if (!event.data || !event.data.type) return;
