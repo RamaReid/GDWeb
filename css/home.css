@@ -1,3 +1,12 @@
+/* Foto central apaisada: ocupar todo el ancho y centrar */
+.scene-space .scene-card.wide img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  object-fit: cover;
+}
 /* ======================================================
    HOME — GD Arquitectura
    Header + Hero (estado estable)
@@ -393,17 +402,31 @@ body.nav-open .nav-toggle span:nth-child(3) {
    HOME — TABLERO NARRATIVO
 ====================================================== */
 
+/* Reducir margen lateral a 60px, sin afectar tamaño de fotos */
+/* Contenedor principal igual al header: centrado, max-width y márgenes laterales iguales */
 #home-board {
   width: 100%;
+  max-width: 1375px;
+  margin-left: auto;
+  margin-right: auto;
   position: relative;
+  padding-left: 40px;
+  padding-right: 40px;
+  box-sizing: border-box;
 }
 
 /* Escenas */
 .scene {
   max-width: var(--gd-max-width); /* mismo ancho que hero */
   margin: 0 auto;
-  padding: clamp(80px, 12vh, 140px) 0;
+  /* reducir espacio superior e inferior para acercar el texto al header */
+  padding: clamp(40px, 8vh, 80px) 0;
   position: relative;
+}
+
+/* Reducir específicamente el espacio inferior de la escena intro a la mitad */
+.scene-intro {
+  padding-bottom: clamp(20px, 4vh, 40px);
 }
 
 /* Texto central */
@@ -411,28 +434,63 @@ body.nav-open .nav-toggle span:nth-child(3) {
   /* Usar el mismo ancho máximo que el header/navbar y centrar */
   max-width: var(--gd-max-width);
   margin: 0 auto;
-  /* Tamaño duplicado: antes clamp(1.2rem, 2vw, 1.6rem) */
-  font-size: clamp(2.4rem, 4vw, 3.2rem);
+  /* Tamaño solicitado ahora: 24px */
+  font-size: 24px;
   line-height: 1.4;
   text-align: center;
 }
 
+/* Título de escena (encabezado + bajada) */
+.scene-title {
+  max-width: var(--gd-max-width);
+  margin: 0 auto 12px;
+  /* Tamaño solicitado: 36px */
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 700;
+  text-align: center;
+  color: var(--gd-white);
+}
+
 /* Grillas */
+/* Reforzar grid y gap con !important */
+/* Grid de dos columnas bien separadas para fotos cuadradas */
+/* Grid de tres columnas para fotos cuadradas */
 .scene-moments,
 .scene-details {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: clamp(24px, 4vw, 48px);
+  grid-template-columns: repeat(3, 1fr);
+  gap: 48px;
+  max-width: 100%;
+  align-items: start;
+}
+/* Limitar altura de fotos cuadradas a 50vh */
+/* Fotos cuadradas: cuadradas, altura máxima 70vh, ancho 100% */
+.scene-card.square img {
+  width: 100%;
+  aspect-ratio: 1/1;
+  max-height: 70vh;
+  object-fit: cover;
+  display: block;
+  border-radius: 6px;
 }
 
 /* Cards */
+/* Limitar tamaño de las tarjetas y evitar overflow */
 .scene-card {
   display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow: hidden;
+  border-radius: 6px;
 }
 
+/* Limitar tamaño de las imágenes dentro de las tarjetas */
+/* Limitar tamaño de las imágenes dentro de las tarjetas */
 .scene-card img {
   width: 100%;
+  max-width: 100%;
   height: auto;
   display: block;
 }
@@ -441,4 +499,7 @@ body.nav-open .nav-toggle span:nth-child(3) {
 .scene-space .scene-card.wide {
   display: block;
 }
+
+/* Escala basada en ancho: imagen central a 75% del contenedor, sin deformar */
+
 
