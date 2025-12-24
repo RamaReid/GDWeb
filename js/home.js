@@ -72,7 +72,7 @@
         document.body.classList.add("hero-visible");
 
         if (heroSection) {
-          heroSection.style.transition = "opacity 1.5s ease";
+          heroSection.style.transition = "opacity 1.5s ease-out 150ms";
           heroSection.style.opacity = "1";
           heroSection.style.visibility = "visible";
           heroSection.style.pointerEvents = "auto";
@@ -113,15 +113,16 @@
         }
 
         if (hero) {
-          hero.style.transition =
-            "opacity 1.5s ease, transform 2.5s cubic-bezier(0.22,0.6,0.2,1)";
+          hero.style.transition = "opacity 1.5s ease-out 150ms, transform 1.9s cubic-bezier(.22,.9,.3,1) 150ms";
           hero.style.opacity = "1";
-          hero.style.transform = "scale(1)";
+          hero.style.transform = "translateY(0) scale(1)";
         }
       }, 1200);
     }, HOME_DELAY);
   });
 })();
+
+// (no deterministic force here; intro.js controls reveal)
 
 // NAV MOBILE TOGGLE
 const navToggle = document.querySelector(".nav-toggle");
