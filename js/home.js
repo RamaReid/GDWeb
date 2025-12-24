@@ -93,6 +93,8 @@
             // Identificador útil (y compatibilidad si algún CSS/JS lo usa)
             iframe.id = "hero-iframe";
 
+              // smoothScroll injection disabled temporarily (was causing scroll/layout issue)
+
             // Fallback: si el contenido del iframe no emite postMessage,
             // igual ocultamos el header al primer click/tap en el iframe.
             const hideHeaderFromIframe = () => {
