@@ -1,649 +1,422 @@
-/* Foto central apaisada: ocupar todo el ancho y centrar */
-.scene-space .scene-card.wide img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  object-fit: cover;
-}
 /* ======================================================
-   HOME — GD Arquitectura
-   Header + Hero (estado estable)
+   1. ESTRUCTURA Y BLOQUEO
 ====================================================== */
+body { 
+  overflow-x: hidden; 
+  overflow-y: auto; 
+  color: var(--gd-grey); 
+  background: var(--gd-background); 
+  margin: 0; 
+}
+
+body.sequence-only { 
+  height: 100%; 
+  overflow: hidden; 
+}
+
+#app-layer { 
+  position: relative; 
+  z-index: 30;
+}
 
 /* ======================================================
-   SCROLL — BLOQUEO SOLO DURANTE INTRO (sequence-only)
+   2. EL PLANO (Nítido -> Blur)
 ====================================================== */
-body {
-  overflow-x: hidden;
-  overflow-y: auto;
-  color: var(--gd-grey);
+#plano-bg {
+  position: fixed; 
+  inset: 0; 
+  z-index: 0; 
+  pointer-events: none;
+  background-image: url("../img/FondoCasaM.png");
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-size: cover;
+  filter: blur(0px);
+  transition: filter 3s ease, transform 3s ease;
+  will-change: filter, transform;
 }
 
-/* Durante intro/loader: NO SCROLL, sin barra */
-body.sequence-only {
-  height: 100%;
-  overflow: hidden;
+body.hero-visible #plano-bg { 
+  filter: blur(3px); 
+  transform: scale(1.03); 
 }
-
 /* ======================================================
-   APP LAYER
-====================================================== */
-#app-layer {
-  position: relative;
-  z-index: 2;
-}
-
-/* ======================================================
-   HEADER — CONTENEDOR
+   3. HEADER (Arquitectura y Firma)
 ====================================================== */
 .gd-header {
-  position: fixed;
-  top: 5px;
-  left: 40px;
-  right: 40px;
-
+  position: fixed; 
+  top: 5px; 
+  left: 40px; 
+  right: 40px; 
   z-index: 40;
-
-  /* Header hidden by default; shown when body.header-visible is present */
-  transform: translateY(-120%);
+  transform: translateY(-130%); 
   opacity: 0;
-  pointer-events: none;
-  transition:
-    transform 0.9s cubic-bezier(0.22, 0.6, 0.2, 1),
-    opacity 0.6s ease;
+  transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.8s ease;
+}
+
+body.header-visible .gd-header { 
+  transform: translateY(0); 
+  opacity: 1; 
+  pointer-events: auto; 
+}
+
+.brand { 
+  display: flex; 
+  align-items: center; 
+  gap: 14px; 
+}
+
+.brand-link { 
+  display: flex; 
+  align-items: center; 
+  text-decoration: none; 
+}
+
+.brand-logo { 
+  width: 100px; 
+  height: auto; 
+  display: block; 
+}
+
+/* Estilos técnicos del Logo (Restaurados) */
+.gd-header .brand-logo .logoL0 { 
+  stroke: var(--gd-grey); 
+  stroke-width: 1.5; 
+  stroke-dasharray: 5 3 1 3; 
+  fill: none; 
+}
+
+.gd-header .brand-logo .logoL1, .logoL2 { 
+  stroke: var(--gd-grey); 
+  stroke-width: 0.75; 
+  fill: none; 
+}
+
+.gd-header .brand-logo .logoL3 { 
+  stroke: var(--gd-red); 
+  stroke-width: 0.9; 
+  fill: none; 
+}
+
+.gd-header .brand-logo .logoL4 { 
+  stroke: var(--gd-red); 
+  stroke-width: 1; 
+  fill: none; 
+}
+
+.gd-header .brand-logo .logoL5 { 
+  stroke: var(--gd-blue); 
+  stroke-width: 1; 
+  fill: none; 
+}
+
+.brand-tagline { 
+  font-size: 1rem; 
+  letter-spacing: 0.08em; 
+  text-transform: uppercase; 
+  color: var(--gd-grey); 
+  white-space: nowrap; 
 }
 
 body.header-visible .gd-header {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
+    pointer-events: auto !important;
 }
 
-/* ======================================================
-   HEADER — CÁPSULA
-====================================================== */
+/* 2. HOVER DEL LOGO (No estaba en tu archivo) */
+.brand-link:hover .brand-logo {
+    filter: brightness(1.3);
+    transform: scale(1.1);
+    transition: all 0.3s ease;
+}
+
+/* NAVEGACIÓN (Restaurada) */
 .navbar {
-  max-width: 1375px;
-  margin: 40px auto 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 35px;
-
-  background: rgba(15, 19, 32, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 9999px;
+  max-width: 1375px; margin: 40px auto 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 35px; background: rgba(15, 19, 32, 0.5);
+  backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 9999px;
 }
 
-/* ======================================================
-   HEADER — OCULTO DURANTE INTERACCIÓN CON HERO
-====================================================== */
-body.hero-interacting .gd-header {
-  transform: translateY(-120%);
-  opacity: 0;
-  pointer-events: none;
+.nav-area { 
+  display: flex; 
+  align-items: center; 
 }
 
-
-/* ======================================================
-   BRAND
-====================================================== */
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.brand-link {
-  transition: transform 0.35s cubic-bezier(0.22, 0.6, 0.2, 1);
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.brand-logo {
-  width: 100px;
-  height: auto;
-  display: block;
-  transform-box: fill-box;
-  transform-origin: center;
-}
-
-/* LOGO HOVER — SOLO SCALE */
-.brand-link:hover {
-  transform: scale(1.15);
-}
-
-.brand-tagline {
-  font-size: 1rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--gd-grey);
-  white-space: nowrap;
-}
-
-/* ======================================================
-   LOGO SVG (HEADER)
-====================================================== */
-.gd-header .brand-logo * {
-  fill: none;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  animation: none !important;
-  stroke-dashoffset: 0 !important;
-}
-
-.gd-header .brand-logo .logoL0 {
-  stroke: var(--gd-grey);
-  stroke-width: 1.5;
-  stroke-dasharray: 5 3 1 3;
-}
-
-.gd-header .brand-logo .logoL1 {
-  stroke: var(--gd-grey);
-  stroke-width: 0.75;
-}
-
-.gd-header .brand-logo .logoL2 {
-  stroke: var(--gd-grey);
-  stroke-width: 0.75;
-}
-
-.gd-header .brand-logo .logoL3 {
-  stroke: var(--gd-red);
-  stroke-width: 0.9;
-}
-
-.gd-header .brand-logo .logoL4 {
-  stroke: var(--gd-red);
-  stroke-width: 1;
-}
-
-.gd-header .brand-logo .logoL5 {
-  stroke: var(--gd-blue);
-  stroke-width: 1;
-}
-
-/* ======================================================
-   NAV
-====================================================== */
-.nav-area {
-  display: flex;
-  align-items: center;
-}
-
-.nav-list {
-  list-style: none;
-  display: flex;
-  gap: 28px;
-  margin: 0;
-  padding: 0;
+.nav-list { 
+  list-style: none; 
+  display: flex; 
+  gap: 28px; 
+  margin: 0; 
+  padding: 0; 
 }
 
 .nav-list a {
-  position: relative;
-  display: inline-block;
-
-  font-size: 1rem;
-  letter-spacing: 0.1em;
+  font-size: 1rem; 
+  letter-spacing: 0.1em; 
   text-transform: uppercase;
-  color: var(--gd-grey);
+  color: var(--gd-grey); 
   text-decoration: none;
-
-  transition: transform 0.2s ease;
-}
-
-/* NAV HOVER — SUBRAYADO + SCALE */
-.nav-list a::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-
-  width: 100%;
-  height: 1px;
-
-  background: rgba(255, 255, 255, 0.7);
-
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.2s ease;
-}
-
-.nav-list a:hover {
-  transform: scale(1.1);
-}
-
-.nav-list a:hover::after {
-  transform: scaleX(1);
-}
-
-/* ======================================================
-   HERO — CONTENEDOR
-====================================================== */
-.hero-revista-section {
   position: relative;
-  width: 100%;
-  height: 100vh;/* ← vuelve al alto exacto de “pantalla completa” */
-  min-height: 100vh; /* ← opcional, pero lo podés dejar */
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 25px;
-  box-sizing: border-box;
-
-  z-index: 30;
-
-  /* estado inicial oculto */
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  /* sin transform en el contenedor para no alterar la posición final del layout */
-  transform: none;
-}
-
-
-/* ======================================================
-   HERO — CÁPSULA
-====================================================== */
-.hero-revista-shell {
-  width: 100%;
-  height: 100%;
-
-  background: rgba(15, 19, 32, 0.55);
-
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 0px;
-
-  overflow: hidden;
-  will-change: transform, opacity;
-  /* movimiento inicial del contenido (no afecta layout) */
-  transform: translateY(10px) scale(0.995);
-}
-
-body.hero-visible .hero-revista-section {
-  opacity: 1;
-  visibility: visible;
+  transition: all 0.3s ease;
   pointer-events: auto;
 }
 
-/* Preferencias de movimiento reducido */
-@media (prefers-reduced-motion: reduce) {
-  .hero-revista-section,
-  .hero-revista-shell {
-    transition: none !important;
-    will-change: auto !important;
-    transform: none !important;
-  }
+.nav-list a::after {
+  content: "";
+  position: absolute; 
+  left: 0; 
+  bottom: -6px; 
+  width: 100%; 
+  height: 1px;
+  background: rgba(255, 255, 255, 0.7); 
+  transform: scaleX(0); 
+  transition: transform 0.2s ease;
+}
+
+.nav-list a:hover { 
+  transform: scale(1.1);
+  color: #ffffff;
+}
+
+.nav-list a:hover::after { 
+  transform: scaleX(1); 
+}
+
+.nav-toggle { 
+  display: none; 
+  width: 36px; 
+  height: 36px; 
+  background: none; 
+  border: 0; 
+  cursor: pointer; 
+  flex-direction: column; 
+  justify-content: center; 
+  gap: 6px; 
+}
+
+.nav-toggle span { 
+  display: block; 
+  height: 2px; 
+  width: 100%; 
+  background: white; 
 }
 
 /* ======================================================
-   NAV TOGGLE (hamburguesa / X)
+   4. HERO — REVISTA
 ====================================================== */
-
-.nav-toggle {
-  display: none;
-  width: 36px;
-  height: 36px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-
-  flex-direction: column;
+.hero-revista-section {
+  position: relative; 
+  width: 100%; 
+  height: 100vh;
+  display: flex; 
+  align-items: center; 
   justify-content: center;
-  gap: 6px;
+  padding: 25px; 
+  box-sizing: border-box; 
+  z-index: 30;
+  opacity: 0; 
+  visibility: hidden; 
+  transition: opacity 2.5s ease-out;
 }
 
-.nav-toggle span {
-  display: block;
-  height: 2px;
-  width: 100%;
-  background: white;
-  transition: transform 0.3s ease, opacity 0.2s ease;
+.hero-revista-shell {
+   width: 100%; 
+   height: 100%; 
+   background: rgba(15, 19, 32, 0.55); 
+   border: 1px solid rgba(255, 255, 255, 0.22); 
+   overflow: hidden; 
 }
 
-/* Estado X */
-body.nav-open .nav-toggle span:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
+body.hero-visible .hero-revista-section { 
+  opacity: 1; 
+  visibility: visible; 
 }
 
-body.nav-open .nav-toggle span:nth-child(2) {
+/* ======================================================
+   5. HOME BOARD (Espacios de Diseño)
+====================================================== */
+
+#home-board { 
+  width: 100%; 
+  max-width: 1375px; 
+  margin: 0 auto; 
+  padding: 0 40px; 
+  box-sizing: border-box; 
+}
+
+.scene { 
+  max-width: 1375px; 
+  margin: 0 auto; 
+  padding: 30px 0; 
+  position: relative; 
+}
+
+.scene-intro { 
+  padding-bottom: 20px; 
+}
+
+.scene-divider { 
+  padding-bottom: 10px; 
+}
+
+.scene-title { 
+  font-size: 40px; 
+  font-weight: 700; 
+  text-align: center; 
+  color: white; 
+  margin: 0 auto 20px; 
+}
+
+.scene-subtitle { 
+  font-size: 26px; 
+  font-weight: 700; 
+  text-align: center; 
+  color: var(--gd-grey); 
+  margin: 0 auto 12px; 
+}
+
+.scene-text { 
+  font-size: 26px; 
+  line-height: 1.4; 
+  text-align: center; 
+  max-width: 1375px; 
+  margin: 0 auto; 
+}
+
+.scene-moments, .scene-details { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 48px; 
+  margin-top: 30px; 
+}
+
+.scene-card {
+  display: block; 
+  width: 100%; 
+  border-radius: 6px; 
+  overflow: hidden; 
   opacity: 0;
+  transform: translateY(15px) scale(0.99);
+  transition: opacity 1.5s ease, transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-body.nav-open .nav-toggle span:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
+.scene-card.is-visible { 
+  opacity: 1; 
+  transform: translateY(0) scale(1); 
 }
 
-
-/* ======================================================
-   RESPONSIVE
-====================================================== */
-@media (max-width: 1024px) {
-  .navbar {
-    max-width: calc(100% - 32px);
-    margin: 40px auto 0;
-    padding: 0 24px 0 12px;
-    border-radius: 9999px;
-  }
-
-  .nav-list {
-    gap: 22px;
-  }
-
-  .brand-tagline {
-    display: none;
-  }
+.scene-card.square img { 
+  width: 100%; 
+  aspect-ratio: 1/1; 
+  object-fit: cover; 
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    margin: 40px auto;
-    padding: 0px 14px;
-    border-radius: 9999px;
-  }
+.scene-card.wide img { 
+  width: 100%; 
+  height: auto; 
+  display: block; 
+}
 
-  .brand-tagline {
-    display: none;
-  }
+.scene-card img { 
+  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1); 
+}
 
-  /* mostrar hamburguesa */
-  .nav-toggle {
-    display: flex;
-    margin-right: 15px;
-  }
-
-  /* ocultar nav por defecto */
-  .nav-area {
-    position: fixed;
-    top: 90px;
-    right: 20px;
-    left: 20px;
-
-    background: rgba(15, 19, 32, 0.15);
-    border-radius: 0%;
-    padding: 10px;
-
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  /* nav abierto */
-  body.nav-open .nav-area {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }
-
-  .nav-list {
-    flex-direction: column;
-    gap: 18px;
-    align-items: flex-start;
-  }
-
-  .nav-list a {
-    font-size: 0.8rem; /* −20% */
-  }
+.scene-card:hover img { 
+  transform: scale(1.08); 
 }
 
 /* ======================================================
-   FOOTER — ICONS
-   - Make icons larger
-   - Container aligned to header width
-   - Gmail icon visually centered and slightly larger
+   6. FOOTER (Versión Consolidada y Espaciada)
 ====================================================== */
-#gd-footer{
-  margin: 0; /* keep outer box aligned with header container */
-  padding: 0; /* let inner capsule handle its own padding */
-  box-sizing: border-box;
+#gd-footer { 
+  width: 100%; 
+  padding: 100px 0;
+  position: relative;
+  z-index: 100;   
 }
 
-.footer-icons {
-  /* Container neutral (no capsule) — icons will be grouped centered */
-  max-width: 1375px;
-  margin: 40px auto 0;
-  padding: 0 35px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center; /* group icons together */
-  gap: 60px;
-
-  box-sizing: border-box;
+.footer-icons { 
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  gap: 140px; /* SEPARACIÓN GENEROSA: De 100px a 140px */
 }
 
 .footer-icons .icon-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: auto;
 }
 
-.footer-icons .icon-link img {
-  width: 40px;
-  height: auto;
+.footer-icons .icon-link img { 
+  width: 45px; 
+  height: auto; 
   display: block;
-  transition: transform 0.18s ease;
 }
 
-/* Emphasize the center (third) icon — Gmail */
-.footer-icons .icon-link:nth-child(3) img {
-  width: 45px;
+/* El icono central (Gmail) un poco más grande para equilibrio visual */
+.footer-icons .icon-link:nth-child(3) img { 
+  width: 52px; 
 }
 
-/* Hover effect */
-.footer-icons .icon-link:hover img {
-  transform: scale(1.08);
+/* Efecto Hover: Salto elegante */
+.footer-icons .icon-link:hover {
+  transform: translateY(-12px) scale(1.2);
+  transition: all 0.5s ease;
+}
+
+/* ======================================================
+   7. RESPONSIVE
+====================================================== */
+
+@media (max-width: 1024px) { 
+  .brand-tagline { display: none; } 
 }
 
 @media (max-width: 768px) {
-  .footer-icons {
-    gap: 12px;
-    padding: 0 18px;
+  .gd-header { 
+    left: 20px; right: 20px; 
   }
-  .footer-icons .icon-link img { width: 36px; }
-  .footer-icons .icon-link:nth-child(3) img { width: 41px; }
+
+  .nav-toggle { 
+    display: flex; 
+  }
+
+  .nav-area {
+    position: fixed; 
+    top: 100px; 
+    left: 20px; 
+    right: 20px; 
+    background: rgba(15, 19, 32, 0.95); 
+    padding: 20px; 
+    border-radius: 20px; 
+    display: none; 
+  }
+
+  body.nav-open .nav-area { 
+    display: flex; 
+  }
+
+  .nav-list { 
+    flex-direction: column; 
+    gap: 20px; 
+  }
+
+  .scene-moments, .scene-details { 
+    grid-template-columns: 1fr; 
+    gap: 30px; 
+  }
+
+  .scene-title { 
+    font-size: 32px; 
+  }
+
+  .scene-text, .scene-subtitle { 
+    font-size: 20px; 
+  }
+
+  .footer-icons { 
+    gap: 30px;
+  }
 }
-
-/* ======================================================
-   HOME — TABLERO NARRATIVO
-====================================================== */
-
-/* Reducir margen lateral a 60px, sin afectar tamaño de fotos */
-/* Contenedor principal igual al header: centrado, max-width y márgenes laterales iguales */
-#home-board {
-  width: 100%;
-  max-width: 1375px;
-  margin-left: auto;
-  margin-right: auto;
-  position: relative;
-  padding-left: 40px;
-  padding-right: 40px;
-  box-sizing: border-box;
-}
-
-/* Escenas */
-.scene {
-  max-width: var(--gd-max-width); /* mismo ancho que hero */
-  margin: 0 auto;
-  /* Espaciado normalizado: top 30px, bottom 30px (excepciones pueden sobrescribir) */
-  padding: 30px 0;
-  position: relative;
-}
-
-/* Ajuste específico para la escena intro (garantiza title→subtitle = 100px) */
-.scene-intro {
-  padding-bottom: 20px;
-}
-
-/* Ajuste para divisores: reducir espacio inferior para controlar distancia texto→imágenes */
-.scene-divider {
-  padding-bottom: 10px;
-}
-
-/* Texto central */
-.scene-text {
-  /* Usar el mismo ancho máximo que el header/navbar y centrar */
-  max-width: var(--gd-max-width);
-  margin: 0 auto;
-  /* Tamaño solicitado ahora: 26px */
-  font-size: 26px;
-  line-height: 1.4;
-  text-align: center;
-}
-
-/* Subtítulo de escena (añadido) */
-.scene-subtitle {
-  max-width: var(--gd-max-width);
-  margin: 0 auto 12px;
-  font-size: 26px;
-  font-weight: 700;
-  line-height: 1.3;
-  text-align: center;
-  color: var(--gd-grey);
-}
-
-/* Título de escena (encabezado + bajada) */
-.scene-title {
-  max-width: var(--gd-max-width);
-  margin: 0 auto 20px;
-  /* Tamaño solicitado: 40px */
-  font-size: 40px;
-  line-height: 1.1;
-  font-weight: 700;
-  text-align: center;
-  color: var(--gd-white);
-}
-
-/* Grillas */
-/* Reforzar grid y gap con !important */
-/* Grid de dos columnas bien separadas para fotos cuadradas */
-/* Grid de tres columnas para fotos cuadradas */
-.scene-moments,
-.scene-details {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 48px;
-  max-width: 100%;
-  align-items: start;
-}
-/* Limitar altura de fotos cuadradas a 50vh */
-/* Fotos cuadradas: cuadradas, altura máxima 70vh, ancho 100% */
-.scene-card.square img {
-  width: 100%;
-  aspect-ratio: 1/1;
-  max-height: 70vh;
-  object-fit: cover;
-  display: block;
-  border-radius: 6px;
-}
-
-/* Cards */
-/* Limitar tamaño de las tarjetas y evitar overflow */
-.scene-card {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  overflow: hidden;
-  border-radius: 6px;
-}
-
-/* Limitar tamaño de las imágenes dentro de las tarjetas */
-/* Limitar tamaño de las imágenes dentro de las tarjetas */
-.scene-card img {
-  width: 100%;
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Hero horizontal */
-.scene-space .scene-card.wide {
-  display: block;
-}
-
-/* ======================================================
-   FOOTER — ICONOS (UNIFICADO)
-   Estas reglas reemplazan estilos antiguos que reducen
-   el tamaño de los iconos; mantienen coherencia con
-   las definiciones principales de `.footer-icons`.
-====================================================== */
-#gd-footer{
-  width: 100%;
-  display: block;
-  padding: 24px 0 48px;
-}
-
-#gd-footer .footer-icons{
-  /* Neutral footer capsule (no visible container) */
-  max-width: 1375px;
-  margin: 40px auto 0;
-  padding: 0 35px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 60px;
-  box-sizing: border-box;
-}
-
-#gd-footer .icon-link{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  text-decoration: none;
-  border-radius: 999px;
-  transform: translateZ(0);
-  transition: transform 0.18s ease, opacity 0.18s ease;
-}
-
-#gd-footer .footer-icons .icon-link{ flex: 0 0 auto; }
-
-#gd-footer .icon-link:hover{
-  transform: scale(1.06);
-}
-
-/* Tamaños grandes por defecto (doble tamaño solicitado) */
-
-#gd-footer .icon-link img{
-  width: 45px;
-  height: auto;
-  display: block;
-}
-
-/* Gmail (centro) same size as others */
-#gd-footer .icon-link:nth-child(3) img{
-  width: 45px;
-}
-
-@media (max-width: 768px) {
-  #gd-footer .footer-icons{ gap: 12px; padding: 0 18px; }
-  #gd-footer .icon-link img{ width: 42px; }
-  #gd-footer .icon-link:nth-child(3) img{ width: 51px; }
-}
-
-/* En pantallas grandes asegurar al menos 120px para cada icono */
-@media (min-width: 769px) {
-  #gd-footer .footer-icons{ gap: 60px; }
-  #gd-footer .icon-link img{ width: 40px; }
-  #gd-footer .icon-link:nth-child(3) img{ width: 45px; }
-}
-
-
-
-
-
-
-

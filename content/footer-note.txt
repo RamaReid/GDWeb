@@ -1,3 +1,0 @@
-Footer assets: logo-footer.svg, instagram.svg, facebook.svg, mail.svg, phone.svg
-Legal templates: privacy.html, terms.html
-Replace placeholders with production content.

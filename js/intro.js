@@ -1,73 +1,98 @@
-// intro.js
-// Lift → Drop → Bounce
-// El radial reveal comienza cuando TERMINA el bounce
-// y COINCIDE con el inicio del fade del logo
+/**
+ * intro.js
+ * Gestiona la coreografía física del logo: Lift → Drop → Bounce.
+ * Al finalizar, inicia el Radial Reveal (amanecer) y libera el Home.
+ */
 
 let introExecuted = false;
 
 window.addEventListener("appReady", () => {
+
+  if (window.__gd_skip_intro) return; 
+
   if (introExecuted) return;
   introExecuted = true;
 
   const container = document.getElementById("loader-container");
-  if (!container) return;
+  const svg = container?.querySelector("svg");
+  
+  if (!svg) {
+    console.warn("GD Intro: No se encontró el SVG del loader.");
+    // Fallback de seguridad: si no hay SVG, liberamos el sitio igual
+    window.dispatchEvent(new Event("introComplete"));
+    document.body.classList.remove("sequence-only");
+    return;
+  }
 
-  const svg = container.querySelector("svg");
-  if (!svg) return;
-
-  // Estado base
+  /* ======================================================
+     1. CONFIGURACIÓN INICIAL
+     Aseguramos el punto de apoyo para que el rebote sea natural.
+  ====================================================== */
   svg.style.transformOrigin = "50% 70%";
-  svg.style.transform = "translateY(0) scale(1)";
-
-  // -------- LIFT --------
+  
+  // Iniciamos la primera fase: Elevación (Lift)
   svg.classList.add("lift-logo");
 
-  svg.addEventListener("animationend", function onLift(e) {
-    if (e.target !== svg || e.animationName !== "lift") return;
+  /* ======================================================
+     2. GESTIÓN DE ANIMACIONES ENCADENADAS
+  ====================================================== */
 
-    svg.removeEventListener("animationend", onLift);
-    svg.classList.remove("lift-logo");
+  svg.addEventListener("animationend", function onAnimationEnd(e) {
+    // Solo escuchamos animaciones que ocurren en el SVG principal
+    if (e.target !== svg) return;
 
-    // -------- DROP --------
-    svg.classList.add("drop-logo");
+    // --- FASE: LIFT FINALIZADA ---
+    if (e.animationName === "lift") {
+      svg.classList.remove("lift-logo");
+      // Iniciamos Caída (Drop)
+      svg.classList.add("drop-logo");
+    }
 
-    svg.addEventListener("animationend", function onDrop(e) {
-      if (e.target !== svg || e.animationName !== "drop") return;
-
-      svg.removeEventListener("animationend", onDrop);
+    // --- FASE: DROP FINALIZADA ---
+    else if (e.animationName === "drop") {
       svg.classList.remove("drop-logo");
-
-      // -------- BOUNCE --------
+      // Iniciamos Rebote final (Bounce)
       svg.classList.add("bounce-logo");
+    }
 
-      svg.addEventListener("animationend", function onBounce(e) {
-        if (e.target !== svg || e.animationName !== "bounce") return;
+    // --- FASE: BOUNCE FINALIZADA (El momento de la verdad) ---
+    else if (e.animationName === "bounce") {
+      svg.removeEventListener("animationend", onAnimationEnd);
+      svg.classList.remove("bounce-logo");
 
-        svg.removeEventListener("animationend", onBounce);
-        svg.classList.remove("bounce-logo");
+      /* ======================================================
+         3. EL AMANECER (Hand-off al Home)
+         El logo físico termina y comienza la revelación del plano.
+      ====================================================== */
 
-        // 🔑 A PARTIR DE ACÁ: fin del gesto físico del logo
+      // A. Desvanecimiento suave del logo del loader (0.6s)
+      svg.style.transition = "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+      svg.style.opacity = "0";
 
-        // Inicia fade del logo
-        svg.style.transition = "opacity 0.6s ease";
-        svg.style.opacity = "0";
+      // B. Inicio del Radial Reveal (El telón se abre)
+      // Duración de 6s para apreciar la nitidez del plano técnico.
+      if (typeof window.startRadialReveal === "function") {
+        window.startRadialReveal({
+          duration: 6000 
+        });
+      }
 
-        // 🔑 EL REVEAL EMPIEZA ACÁ (inicio del fade)
-        if (typeof window.startRadialReveal === "function") {
-          window.startRadialReveal({
-            duration: 13500
-          });
-        }
+      sessionStorage.setItem('gd_intro_done', 'true'); 
 
-        // Evento de cierre de intro
-        window.dispatchEvent(new Event("introComplete"));
+      // C. Disparo del evento crítico para home.js
+      // Esto inicia el conteo de BEATS (Here Comes the Sun).
+      window.dispatchEvent(new Event("introComplete"));
 
-        document.body.classList.remove("sequence-only");
+      // D. Liberación del bloqueo de scroll
+      // Permite que la estructura del sitio sea interactiva.
+      document.body.classList.remove("sequence-only");
 
-
-        // (si luego decidís volver a usar plano-visible, quedaría acá)
-        // document.body.classList.add("plano-visible");
-      });
-    });
+      setTimeout(() => {
+          const introLayer = document.getElementById("intro-layer");
+          const maskSVG = document.getElementById("radialMaskSVG");
+          if (introLayer) introLayer.style.display = "none";
+          if (maskSVG) maskSVG.style.display = "none";
+      }, 6500); // Esperamos a que el Radial Reveal termine (6s + margen)
+      }
   });
 });

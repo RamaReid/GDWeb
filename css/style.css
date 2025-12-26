@@ -80,6 +80,8 @@ body.hero-visible #plano-bg {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  pointer-events: none; 
 }
 
 /* COVER REAL DE LA INTRO */

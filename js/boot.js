@@ -1,5 +1,25 @@
 // boot.js — gate: window.load + (loaderCycles >= 2) => appReady
 (function () {
+    // --- NUEVO: Lógica de Salto de Intro ---
+    if (sessionStorage.getItem('gd_intro_done') === 'true') {
+        window.__gd_skip_intro = true;
+        
+        // Cuando el HTML esté listo, forzamos el estado final
+        document.addEventListener("DOMContentLoaded", () => {
+            document.body.classList.remove("sequence-only");
+            document.body.classList.add("header-visible", "hero-visible");
+            
+            const introLayer = document.getElementById("intro-layer");
+            if (introLayer) introLayer.style.display = "none";
+
+            const maskSVG = document.getElementById("radialMaskSVG");
+            if (maskSVG) maskSVG.style.display = "none";           
+            
+            // Avisamos que la intro "terminó" (aunque nos la saltamos)
+            window.dispatchEvent(new Event("introComplete"));
+        });
+    }
+    // --- FIN Lógica de Salto ---
     let loaded = false;
 
     window.addEventListener("load", () => {

@@ -1,45 +1,31 @@
 // header-on-scroll.js
-// Show header when user scrolls; hide when at top
 (function(){
   'use strict';
-  // Hysteresis thresholds to avoid flicker when entering/leaving the hero
-  const SHOW_THRESHOLD = 80; // show header when scrolled beyond this
-  const HIDE_THRESHOLD = 40; // hide header when scrolled above this
-  let last = window.scrollY || 0;
+
+  const SHOW_THRESHOLD = 150; // Un poco más de margen para no molestar al Hero
   let ticking = false;
 
   function update() {
-    ticking = false;
     const y = window.scrollY || 0;
-    // Hysteresis: require passing SHOW_THRESHOLD to show, and HIDE_THRESHOLD to hide
+
+    // Si el usuario scrollea hacia abajo, el Header vuelve a aparecer
+    // sin importar que el JS inicial lo haya ocultado.
     if (y > SHOW_THRESHOLD) {
       document.body.classList.add('header-visible');
-    } else if (y < HIDE_THRESHOLD) {
-      document.body.classList.remove('header-visible');
+    } else {
+      // Si vuelven arriba de todo, lo ocultamos para que el Hero respire
+      // (a menos que estemos en la fase de 'Firma' inicial)
+      if (window.__gd_scroll_unlocked) {
+         document.body.classList.remove('header-visible');
+      }
     }
-    last = y;
+    ticking = false;
   }
 
-  function onScroll() {
+  window.addEventListener('scroll', () => {
     if (!ticking) {
-      ticking = true;
       requestAnimationFrame(update);
+      ticking = true;
     }
-  }
-
-  // show header on any pointerdown/wheel/touchstart as well
-  function onUserInput() {
-    // Only show header on direct input if user has already scrolled past the show threshold
-    try {
-      if ((window.scrollY || 0) > SHOW_THRESHOLD) document.body.classList.add('header-visible');
-    } catch (e) {}
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('wheel', onUserInput, { passive: true });
-  window.addEventListener('touchstart', onUserInput, { passive: true });
-  window.addEventListener('pointerdown', onUserInput, { passive: true });
-
-  // initialize state
-  try { if ((window.scrollY || 0) > SHOW_THRESHOLD) document.body.classList.add('header-visible'); } catch(e) {}
+  }, { passive: true });
 })();
