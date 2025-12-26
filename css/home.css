@@ -72,7 +72,7 @@ body.header-visible .gd-header {
   align-items: center;
   justify-content: space-between;
 
-  padding: 0px 35px 0px 12.5px;
+  padding: 0 35px;
 
   background: rgba(15, 19, 32, 0.5);
   backdrop-filter: blur(5px);
@@ -399,6 +399,64 @@ body.nav-open .nav-toggle span:nth-child(3) {
 }
 
 /* ======================================================
+   FOOTER — ICONS
+   - Make icons larger
+   - Container aligned to header width
+   - Gmail icon visually centered and slightly larger
+====================================================== */
+#gd-footer{
+  margin: 0; /* keep outer box aligned with header container */
+  padding: 0; /* let inner capsule handle its own padding */
+  box-sizing: border-box;
+}
+
+.footer-icons {
+  /* Container neutral (no capsule) — icons will be grouped centered */
+  max-width: 1375px;
+  margin: 40px auto 0;
+  padding: 0 35px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center; /* group icons together */
+  gap: 60px;
+
+  box-sizing: border-box;
+}
+
+.footer-icons .icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-icons .icon-link img {
+  width: 40px;
+  height: auto;
+  display: block;
+  transition: transform 0.18s ease;
+}
+
+/* Emphasize the center (third) icon — Gmail */
+.footer-icons .icon-link:nth-child(3) img {
+  width: 45px;
+}
+
+/* Hover effect */
+.footer-icons .icon-link:hover img {
+  transform: scale(1.08);
+}
+
+@media (max-width: 768px) {
+  .footer-icons {
+    gap: 12px;
+    padding: 0 18px;
+  }
+  .footer-icons .icon-link img { width: 36px; }
+  .footer-icons .icon-link:nth-child(3) img { width: 41px; }
+}
+
+/* ======================================================
    HOME — TABLERO NARRATIVO
 ====================================================== */
 
@@ -516,6 +574,76 @@ body.nav-open .nav-toggle span:nth-child(3) {
   display: block;
 }
 
-/* Escala basada en ancho: imagen central a 75% del contenedor, sin deformar */
+/* ======================================================
+   FOOTER — ICONOS (UNIFICADO)
+   Estas reglas reemplazan estilos antiguos que reducen
+   el tamaño de los iconos; mantienen coherencia con
+   las definiciones principales de `.footer-icons`.
+====================================================== */
+#gd-footer{
+  width: 100%;
+  display: block;
+  padding: 24px 0 48px;
+}
+
+#gd-footer .footer-icons{
+  /* Neutral footer capsule (no visible container) */
+  max-width: 1375px;
+  margin: 40px auto 0;
+  padding: 0 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  box-sizing: border-box;
+}
+
+#gd-footer .icon-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  text-decoration: none;
+  border-radius: 999px;
+  transform: translateZ(0);
+  transition: transform 0.18s ease, opacity 0.18s ease;
+}
+
+#gd-footer .footer-icons .icon-link{ flex: 0 0 auto; }
+
+#gd-footer .icon-link:hover{
+  transform: scale(1.06);
+}
+
+/* Tamaños grandes por defecto (doble tamaño solicitado) */
+
+#gd-footer .icon-link img{
+  width: 45px;
+  height: auto;
+  display: block;
+}
+
+/* Gmail (centro) same size as others */
+#gd-footer .icon-link:nth-child(3) img{
+  width: 45px;
+}
+
+@media (max-width: 768px) {
+  #gd-footer .footer-icons{ gap: 12px; padding: 0 18px; }
+  #gd-footer .icon-link img{ width: 42px; }
+  #gd-footer .icon-link:nth-child(3) img{ width: 51px; }
+}
+
+/* En pantallas grandes asegurar al menos 120px para cada icono */
+@media (min-width: 769px) {
+  #gd-footer .footer-icons{ gap: 60px; }
+  #gd-footer .icon-link img{ width: 40px; }
+  #gd-footer .icon-link:nth-child(3) img{ width: 45px; }
+}
+
+
+
+
+
 
 
