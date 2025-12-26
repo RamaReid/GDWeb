@@ -419,14 +419,19 @@ body.nav-open .nav-toggle span:nth-child(3) {
 .scene {
   max-width: var(--gd-max-width); /* mismo ancho que hero */
   margin: 0 auto;
-  /* reducir espacio superior e inferior para acercar el texto al header */
-  padding: clamp(40px, 8vh, 80px) 0;
+  /* Espaciado normalizado: top 30px, bottom 30px (excepciones pueden sobrescribir) */
+  padding: 30px 0;
   position: relative;
 }
 
-/* Reducir específicamente el espacio inferior de la escena intro a la mitad */
+/* Ajuste específico para la escena intro (garantiza title→subtitle = 100px) */
 .scene-intro {
-  padding-bottom: clamp(20px, 4vh, 40px);
+  padding-bottom: 20px;
+}
+
+/* Ajuste para divisores: reducir espacio inferior para controlar distancia texto→imágenes */
+.scene-divider {
+  padding-bottom: 10px;
 }
 
 /* Texto central */
@@ -434,18 +439,29 @@ body.nav-open .nav-toggle span:nth-child(3) {
   /* Usar el mismo ancho máximo que el header/navbar y centrar */
   max-width: var(--gd-max-width);
   margin: 0 auto;
-  /* Tamaño solicitado ahora: 24px */
-  font-size: 24px;
+  /* Tamaño solicitado ahora: 26px */
+  font-size: 26px;
   line-height: 1.4;
   text-align: center;
+}
+
+/* Subtítulo de escena (añadido) */
+.scene-subtitle {
+  max-width: var(--gd-max-width);
+  margin: 0 auto 12px;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--gd-grey);
 }
 
 /* Título de escena (encabezado + bajada) */
 .scene-title {
   max-width: var(--gd-max-width);
-  margin: 0 auto 12px;
-  /* Tamaño solicitado: 36px */
-  font-size: 36px;
+  margin: 0 auto 20px;
+  /* Tamaño solicitado: 40px */
+  font-size: 40px;
   line-height: 1.1;
   font-weight: 700;
   text-align: center;

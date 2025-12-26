@@ -34,10 +34,14 @@ body {
   z-index: 0;
   pointer-events: none;
 
-  background-image: url("/img/FondoCasaM.png");
+  background-image: url("../img/FondoCasaM.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
+  /* Sutil atenuación global sin perder detalle */
+  filter: brightness(.95) contrast(.95) saturate(.92);
+  -webkit-filter: brightness(.95) contrast(.95) saturate(.92);
 }
 
 /* Activar blur del plano cuando el hero entra en escena */
@@ -60,9 +64,8 @@ body.hero-visible #plano-bg {
   inset: 0;
   pointer-events: none;
 
-  /* Veladura sutil para bajar contraste */
-  background: rgba(15, 19, 32, 0.35
-  ); /* ajustable */
+  /* Veladura sutil para bajar contraste (ligeramente incrementada) */
+  background: rgba(15, 19, 32, 0.60);
   backdrop-filter: blur(0.5px);
   -webkit-backdrop-filter: blur(0.5px);
 }
