@@ -28,6 +28,10 @@ function startLoop(container) {
             window.loaderCycles = cycleCount;
 
             // Avisar al gate
+            if (typeof window.__gd_nav_wait === "function") {
+                window.__gd_nav_wait();
+            }
+
             if (typeof window.__gd_maybeReady === "function") {
                 window.__gd_maybeReady();
             }

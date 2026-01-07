@@ -127,6 +127,7 @@
   const brandLink = document.querySelector('.brand-link');
   if (brandLink) {
     brandLink.addEventListener('click', () => {
+      sessionStorage.setItem('gd_nav_transition', '1');
       // Al tocar el logo, las fotos se vuelven invisibles de inmediato
       // para que vuelvan a "nacer" cuando el usuario scrollee hacia abajo.
       document.querySelectorAll('.scene-card').forEach(card => {

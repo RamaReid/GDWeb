@@ -22,20 +22,46 @@
 
     if (navTransitionFlag) {
         window.__gd_skip_intro = true;
-        
-        // Cuando el HTML esté listo, forzamos el estado final
-        document.addEventListener("DOMContentLoaded", () => {
-            document.body.classList.remove("sequence-only");
-            document.body.classList.add("header-visible", "hero-visible");
-            
-            const introLayer = document.getElementById("intro-layer");
-            if (introLayer) introLayer.style.display = "none";
 
-            const maskSVG = document.getElementById("radialMaskSVG");
-            if (maskSVG) maskSVG.style.display = "none";           
-            
-            // Avisamos que la intro "terminó" (aunque nos la saltamos)
-            window.dispatchEvent(new Event("introComplete"));
+        // Cuando el HTML est? listo, esperamos al menos 1 ciclo del loader
+        // antes de forzar el estado final.
+        document.addEventListener("DOMContentLoaded", () => {
+            let navResolved = false;
+
+            const resolveNav = () => {
+                if (navResolved) return;
+                navResolved = true;
+                delete window.__gd_nav_wait;
+
+                document.body.classList.remove("sequence-only");
+                document.body.classList.add("header-visible", "hero-visible");
+                
+                const introLayer = document.getElementById("intro-layer");
+                if (introLayer) introLayer.style.display = "none";
+
+                const maskSVG = document.getElementById("radialMaskSVG");
+                if (maskSVG) maskSVG.style.display = "none";           
+                
+                // Avisamos que la intro "termin?" (aunque nos la saltamos)
+                window.dispatchEvent(new Event("introComplete"));
+            };
+
+            const onCycle = () => {
+                if (typeof window.loaderCycles !== "number") return;
+                if (window.loaderCycles < 1) return;
+                resolveNav();
+            };
+
+            const fallback = setTimeout(resolveNav, 5500);
+
+            // Hook de loader.js para esperar al menos un ciclo.
+            window.__gd_nav_wait = () => {
+                clearTimeout(fallback);
+                onCycle();
+            };
+
+            // Si ya tenemos ciclos, resolvemos sin esperar.
+            onCycle();
         });
     }
     // --- FIN Lógica de Salto ---
