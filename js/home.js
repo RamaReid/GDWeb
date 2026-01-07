@@ -4,17 +4,49 @@
   let executed = false;
   const BEAT = 465; 
 
-  window.addEventListener("introComplete", () => {
-    if (executed) return;
-    executed = true;
+  const sequenceTimers = [];
+  const schedule = (fn, delay) => {
+    const id = setTimeout(fn, delay);
+    sequenceTimers.push(id);
+    return id;
+  };
 
-    // Beat 1: Entrada del Header (Firma sobre plano nítido)
-    setTimeout(() => {
+  const clearSequenceTimers = () => {
+    while (sequenceTimers.length) {
+      clearTimeout(sequenceTimers.pop());
+    }
+  };
+
+  const resetSequenceState = () => {
+    document.body.classList.remove("header-visible", "hero-visible");
+
+    const heroSection = document.querySelector(".hero-revista-section");
+    const hero = document.querySelector(".hero-revista-shell");
+
+    if (heroSection) {
+      heroSection.style.opacity = "";
+      heroSection.style.visibility = "";
+    }
+
+    if (hero) {
+      hero.style.transition = "";
+      hero.style.opacity = "";
+      hero.style.transform = "";
+    }
+  };
+
+  const runSequence = (options = {}) => {
+    clearSequenceTimers();
+
+    if (options.reset) {
+      resetSequenceState();
+    }
+
+    schedule(() => {
       document.body.classList.add("header-visible");
     }, BEAT * 3);
 
-    // Beat 8: El Relevo (Sube Header, Entra Hero, Plano Blur)
-    setTimeout(() => {
+    schedule(() => {
       document.body.classList.remove("header-visible");
       document.body.classList.add("hero-visible");
 
@@ -42,17 +74,23 @@
           heroShell.appendChild(iframe);
         }
       }
-    }, BEAT * 8); 
+    }, BEAT * 8);
 
-    // Beat 12: Aparece la navegación (aunque el header esté oculto, ya queda lista)
     const navItems = document.querySelectorAll(".nav-list li");
     navItems.forEach((li, i) => {
-      setTimeout(() => {
+      schedule(() => {
         li.style.opacity = "1";
         li.style.transform = "translateY(0)";
-      }, (BEAT * 10) + (i * 100)); 
+      }, (BEAT * 10) + (i * 100));
     });
+  };
+
+  window.addEventListener("introComplete", () => {
+    if (executed) return;
+    executed = true;
+    runSequence();
   });
+
 
   // Reveal de escenas: Viaje corto de 15px para elegancia
   const sceneObserver = new IntersectionObserver((entries) => {
@@ -94,8 +132,10 @@
       document.querySelectorAll('.scene-card').forEach(card => {
         card.classList.remove('is-visible');
       });
-      
-      // Nota: El scroll hacia arriba ocurre automáticamente por el href="#inicio"
+      // Nota: El scroll hacia arriba ocurre automaticamente por el href="#inicio"
+      setTimeout(() => {
+        runSequence({ reset: true });
+      }, 0);
     });
   }
 

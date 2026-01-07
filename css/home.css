@@ -331,7 +331,7 @@ body.hero-visible .hero-revista-section {
 ====================================================== */
 #gd-footer { 
   width: 100%; 
-  padding: 100px 0;
+  padding: 50px 0;
   position: relative;
   z-index: 100;   
 }
@@ -350,14 +350,14 @@ body.hero-visible .hero-revista-section {
 }
 
 .footer-icons .icon-link img { 
-  width: 45px; 
+  width: 40px; 
   height: auto; 
   display: block;
 }
 
 /* El icono central (Gmail) un poco más grande para equilibrio visual */
 .footer-icons .icon-link:nth-child(3) img { 
-  width: 52px; 
+  width: 45px; 
 }
 
 /* Efecto Hover: Salto elegante */

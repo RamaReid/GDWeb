@@ -1,7 +1,26 @@
 // boot.js — gate: window.load + (loaderCycles >= 2) => appReady
 (function () {
+    // Ensure reload starts at top (avoid scroll restoration).
+    if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+    }
+
+    const resetScroll = () => {
+        if (window.location.hash) return;
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+    };
+
+    window.addEventListener("pageshow", resetScroll);
+    document.addEventListener("DOMContentLoaded", resetScroll);
     // --- NUEVO: Lógica de Salto de Intro ---
-    if (sessionStorage.getItem('gd_intro_done') === 'true') {
+    const navTransitionFlag = sessionStorage.getItem('gd_nav_transition') === '1';
+    if (navTransitionFlag) {
+        sessionStorage.removeItem('gd_nav_transition');
+    }
+
+    if (navTransitionFlag) {
         window.__gd_skip_intro = true;
         
         // Cuando el HTML esté listo, forzamos el estado final
