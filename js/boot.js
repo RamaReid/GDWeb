@@ -22,28 +22,38 @@
 
     if (navTransitionFlag) {
         window.__gd_skip_intro = true;
+        window.stopLoaderLoop = true;
 
-        // Cuando el HTML est? listo, esperamos al menos 1 ciclo del loader
-        // antes de forzar el estado final.
+        // Cuando el HTML este listo, esperamos al menos 1 ciclo del loader
+        // antes de iniciar el radial reveal y liberar la pagina.
         document.addEventListener("DOMContentLoaded", () => {
             let navResolved = false;
+            const revealDuration = 6000;
 
             const resolveNav = () => {
                 if (navResolved) return;
                 navResolved = true;
                 delete window.__gd_nav_wait;
 
-                document.body.classList.remove("sequence-only");
-                document.body.classList.add("header-visible", "hero-visible");
-                
-                const introLayer = document.getElementById("intro-layer");
-                if (introLayer) introLayer.style.display = "none";
+                const logo = document.querySelector("#loader-container svg");
+                if (logo) {
+                    logo.style.transition = "opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)";
+                    logo.style.opacity = "0";
+                }
 
-                const maskSVG = document.getElementById("radialMaskSVG");
-                if (maskSVG) maskSVG.style.display = "none";           
-                
-                // Avisamos que la intro "termin?" (aunque nos la saltamos)
+                if (typeof window.startRadialReveal === "function") {
+                    window.startRadialReveal({ duration: revealDuration });
+                }
+
+                document.body.classList.remove("sequence-only");
                 window.dispatchEvent(new Event("introComplete"));
+
+                setTimeout(() => {
+                    const introLayer = document.getElementById("intro-layer");
+                    const maskSVG = document.getElementById("radialMaskSVG");
+                    if (introLayer) introLayer.style.display = "none";
+                    if (maskSVG) maskSVG.style.display = "none";
+                }, revealDuration + 500);
             };
 
             const onCycle = () => {
