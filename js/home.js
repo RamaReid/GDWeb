@@ -72,7 +72,11 @@
           iframe.style.width = "100%"; iframe.style.height = "100%"; iframe.style.border = "0";
           iframe.id = "hero-iframe";
           heroShell.appendChild(iframe);
+        } else {
+          window.dispatchEvent(new Event("HERO_INTERACTION_FALLBACK"));
         }
+      } else if (!heroShell) {
+        window.dispatchEvent(new Event("HERO_INTERACTION_FALLBACK"));
       }
     }, BEAT * 8);
 

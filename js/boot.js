@@ -15,10 +15,14 @@
     window.addEventListener("pageshow", resetScroll);
     document.addEventListener("DOMContentLoaded", resetScroll);
     // --- NUEVO: Lógica de Salto de Intro ---
-    const navTransitionFlag = sessionStorage.getItem('gd_nav_transition') === '1';
-    if (navTransitionFlag) {
+    const navTransitionStored = sessionStorage.getItem('gd_nav_transition') === '1';
+    if (navTransitionStored) {
         sessionStorage.removeItem('gd_nav_transition');
     }
+
+    const path = window.location.pathname || "";
+    const isIndexPage = path.endsWith("/") || /\/(index|index1)\.html$/i.test(path);
+    const navTransitionFlag = navTransitionStored || !isIndexPage;
 
     if (navTransitionFlag) {
         window.__gd_skip_intro = true;
