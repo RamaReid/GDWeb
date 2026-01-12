@@ -112,9 +112,16 @@
 
   // Parallax del plano
   window.addEventListener('scroll', () => {
-    const plano = document.getElementById('plano-bg');
-    if (plano && window.__gd_scroll_unlocked) {
-      plano.style.transform = `translateY(${window.pageYOffset * 0.1}px) scale(1.03)`;
+    const isProjectIndex = document.body.classList.contains('project-index');
+    const target = isProjectIndex
+      ? document.getElementById('svg-tablero-container')
+      : document.getElementById('plano-bg');
+
+    if (target && window.__gd_scroll_unlocked) {
+      const offset = window.pageYOffset * 0.1;
+      target.style.transform = isProjectIndex
+        ? `translateY(${offset}px)`
+        : `translateY(${offset}px) scale(1.03)`;
     }
   }, { passive: true });
 

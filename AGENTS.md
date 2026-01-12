@@ -93,4 +93,4 @@ Output: A/B/C + riesgos + plan mínimo + estrategia de rollback + implementació
 ---
 
 ## 7) Fuente de verdad (brief)
-Contexto, narrativa y lenguaje proyectual: ver `docs/BRIEF_GD.md`.
+Contexto, narrativa y lenguaje proyectual: ver `doc/BRIEF_GD.md`.

@@ -9,7 +9,7 @@ Mensaje: "El escenario de tu vida".
 Objetivo: no es catálogo; es experiencia guiada para posicionar método y provocar conversación.
 Secuencia: umbral → portada → pausa → evidencia → pregunta → contacto.
 
-Fuente de verdad ampliada: `docs/BRIEF_GD.md`.
+Fuente de verdad ampliada: `doc/BRIEF_GD.md`.
 
 ## Modo de trabajo (obligatorio)
 - Gate A: fixes locales → implementar directo.
