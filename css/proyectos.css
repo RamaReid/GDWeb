@@ -1,18 +1,23 @@
 body.project-index {
-  background-color: #e5e5e1;
   color: #1a1a1a;
   margin: 0;
   overflow-x: hidden;
+  background-color: #efe7d8;
 }
 
 #plano-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-color: #e5e5e1;
+  background-image: url("../img/FondoCasaM.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   pointer-events: none;
-  filter: none;
-  -webkit-filter: none;
+}
+
+body.project-index #plano-bg {
+  filter: brightness(1) contrast(1) saturate(1);
 }
 
 #svg-tablero-container {
@@ -33,14 +38,17 @@ body.project-index {
 }
 
 body.project-index #plano-bg::after {
-  background: transparent;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+  background: rgba(247, 244, 236, 0.18);
+  backdrop-filter: blur(0.2px);
+  -webkit-backdrop-filter: blur(0.2px);
 }
 
 body.project-index.hero-visible #plano-bg {
-  filter: blur(1px);
-  -webkit-filter: blur(1px);
+  filter: blur(2px) brightness(1) contrast(1) saturate(1);
+  -webkit-filter: blur(2px) brightness(1) contrast(1) saturate(1);
+  transform: scale(1.03);
+  transition: filter 3s ease, transform 3s ease;
+  will-change: filter, transform;
 }
 
 .project-index .hero-revista-section {
@@ -85,7 +93,7 @@ body.project-index.hero-visible #plano-bg {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 12px;
+  padding: 6px;
   background: #f7f6f2;
   display: block;
   transform-origin: center;
@@ -108,12 +116,13 @@ body.project-index.hero-visible #plano-bg {
 }
 
 .hero-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  border-radius: 4px;
-}
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 4px;
+    filter: contrast(1.05) saturate(1.03);
+  }
 
 .hero-photo-title {
   position: absolute;
@@ -161,12 +170,16 @@ body.project-index.hero-visible #plano-bg {
   z-index: 2;
   max-width: 1375px;
   margin: 0 auto;
-  padding: 80px 40px 140px;
+  padding: 80px 40px 30px;
 }
 
 .projects-chapter {
   margin: 0 auto 90px;
   scroll-margin-top: 140px;
+}
+
+.projects-chapter:last-of-type {
+  margin-bottom: 0;
 }
 
 .chapter-title {
@@ -186,29 +199,44 @@ body.project-index.hero-visible #plano-bg {
 }
 
 .projects-main .scene-card {
-  transform: translateY(15px) scale(0.99) rotate(var(--tilt, 0deg));
-}
+    transform: translateY(15px) scale(0.99) rotate(var(--tilt, 0deg));
+    text-decoration: none;
+    color: inherit;
+    border-radius: 6px;
+    overflow: hidden;
+  }
 
 .projects-main .scene-card.is-visible {
-  transform: translateY(0) scale(1) rotate(var(--tilt, 0deg));
-}
+    transform: translateY(0) scale(1) rotate(var(--tilt, 0deg));
+  }
+
+.projects-main .scene-card img {
+    display: block;
+    border-radius: inherit;
+    filter: contrast(1.05) saturate(1.03);
+  }
 
 .projects-main .scene-card.tilt-opposite {
   --tilt: 60deg;
 }
 
 .projects-chapter--panorama .scene-card img {
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 64 / 27;
   object-fit: cover;
 }
 
-body.project-index #gd-footer .icon-link img {
-  filter: brightness(0.15) saturate(0);
+.projects-chapter--panorama .chapter-triptych--panorama {
+  grid-template-columns: 1fr;
+  gap: 32px;
 }
 
-body.project-index #gd-footer .icon-link:nth-child(3) img {
-  filter: none;
+.projects-chapter--panorama .scene-card {
+  width: 100%;
 }
+
+body.project-index #gd-footer .icon-link img {
+  filter: brightness(0) saturate(100%) invert(10%) sepia(14%) saturate(2180%) hue-rotate(191deg) brightness(92%) contrast(90%);
+  }
 
 @media (max-width: 900px) {
   .project-index .hero-revista-section {
@@ -252,7 +280,7 @@ body.project-index #gd-footer .icon-link:nth-child(3) img {
   }
 
   .projects-main {
-    padding: 60px 24px 120px;
+    padding: 60px 24px 30px;
   }
 
   .chapter-title {

@@ -134,7 +134,7 @@
       return;
     }
 
-    fetch("img/Cedahause/svg/casaCedahause.svg")
+    fetch("img/casaCedahause.svg")
       .then((response) => response.text())
       .then((svg) => {
         container.innerHTML = svg;

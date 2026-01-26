@@ -70,107 +70,100 @@ body {
 .page:hover .page-content {
     transform: scale(1.01);
 }
-/* Spread layout: a single photo spans two facing pages. Each spread must declare
-   the image to use. Left page shows the LEFT half, right page shows the RIGHT half.
-   Background-size 200% ensures one image covers both pages; background-position
-   selects the half to display. */
+/* Spread layout: a single foto cubre dos páginas enfrentadas.
+   Aquí mapeamos cada spread al hero definitivo de su proyecto. */
 .page.spread .page-content {
     background-repeat: no-repeat;
     background-size: 200% auto; /* 200% width = image spans both pages */
 }
 
-/* Mapping: each spread maps to a single image. The left page shows the left half
-   (background-position: left center) and the right page shows the right half
-   (background-position: right center). We map the images found in img/hero/.
-   Order: spread-1 -> cedahause-hero.png, spread-2 -> ciane-hero.jpg, ... */
 #spread-1-left .page-content {
-    background-image: url('../../img/hero/cedahause-hero.png');
+    background-image: url('../../img/cedahause/cedahause-exterior-hero-este.png');
     background-position: left center;
 }
 #spread-1-right .page-content {
-    background-image: url('../../img/hero/cedahause-hero.png');
+    background-image: url('../../img/cedahause/cedahause-exterior-hero-este.png');
     background-position: right center;
 }
 
 #spread-2-left .page-content {
-    background-image: url('../../img/hero/scohause-hero.png');
+    background-image: url('../../img/donahause/donahause-hero2.png');
     background-position: left center;
 }
 #spread-2-right .page-content {
-    background-image: url('../../img/hero/scohause-hero.png');
+    background-image: url('../../img/donahause/donahause-hero2.png');
     background-position: right center;
 }
 
 #spread-3-left .page-content {
-    background-image: url('../../img/hero/magahause-hero.png');
+    background-image: url('../../img/gadehause/gadehause-exterior-hero-sur.png');
     background-position: left center;
 }
 #spread-3-right .page-content {
-    background-image: url('../../img/hero/magahause-hero.png');
+    background-image: url('../../img/gadehause/gadehause-exterior-hero-sur.png');
     background-position: right center;
 }
 
 #spread-4-left .page-content {
-    background-image: url('../../img/hero/gadehause-hero.png');
+    background-image: url('../../img/jobehause/jobehause-exterior-frente-hero (2).png');
     background-position: left center;
 }
 #spread-4-right .page-content {
-    background-image: url('../../img/hero/gadehause-hero.png');
+    background-image: url('../../img/jobehause/jobehause-exterior-frente-hero (2).png');
     background-position: right center;
 }
 
 #spread-5-left .page-content {
-    background-image: url('../../img/hero/jomahause-hero.png');
+    background-image: url('../../img/jomahause/jomahause-exterior-hero.png');
     background-position: left center;
 }
 #spread-5-right .page-content {
-    background-image: url('../../img/hero/jomahause-hero.png');
+    background-image: url('../../img/jomahause/jomahause-exterior-hero.png');
     background-position: right center;
 }
 
 #spread-6-left .page-content {
-    background-image: url('../../img/hero/usahause-hero.png');
+    background-image: url('../../img/jonohause/jonohause-esterior-hero.png');
     background-position: left center;
 }
 #spread-6-right .page-content {
-    background-image: url('../../img/hero/usahause-hero.png');
+    background-image: url('../../img/jonohause/jonohause-esterior-hero.png');
     background-position: right center;
 }
 
 #spread-7-left .page-content {
-    background-image: url('../../img/hero/ciane-hero.png');
+    background-image: url('../../img/magahause/magahause-exterior-sur-entrada-hero.png');
     background-position: left center;
 }
 #spread-7-right .page-content {
-    background-image: url('../../img/hero/ciane-hero.png');
+    background-image: url('../../img/magahause/magahause-exterior-sur-entrada-hero.png');
     background-position: right center;
 }
 
 #spread-8-left .page-content {
-    background-image: url('../../img/hero/vidahause-hero.png');
+    background-image: url('../../img/markhause/markhause-exterior-hero.png');
     background-position: left center;
 }
 #spread-8-right .page-content {
-    background-image: url('../../img/hero/vidahause-hero.png');
+    background-image: url('../../img/markhause/markhause-exterior-hero.png');
     background-position: right center;
 }
 
 #spread-9-left .page-content {
-    background-image: url('../../img/hero/markhause-hero.png');
+    background-image: url('../../img/scohause/scohause-exterior-hero.png');
     background-position: left center;
 }
 #spread-9-right .page-content {
-    background-image: url('../../img/hero/markhause-hero.png');
+    background-image: url('../../img/scohause/scohause-exterior-hero.png');
     background-position: right center;
 }
 
-/* Spread 10: imagen final (mantener nombre original proporcionado) */
 #spread-10-left .page-content {
-    background-image: url('../../img/hero/donahause-hero.png');
+    background-image: url('../../img/vidahause/vidahause-exterior-hero.png');
     background-position: left center;
 }
 #spread-10-right .page-content {
-    background-image: url('../../img/hero/donahause-hero.png');
+    background-image: url('../../img/vidahause/vidahause-exterior-hero.png');
     background-position: right center;
 }
 
